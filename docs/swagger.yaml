@@ -1,0 +1,70 @@
+basePath: /
+definitions:
+  handler.Data:
+    properties:
+      user:
+        $ref: '#/definitions/types.User'
+    type: object
+  handler.Response:
+    properties:
+      data:
+        $ref: '#/definitions/handler.Data'
+    type: object
+  handler.errorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  types.User:
+    properties:
+      employed_at:
+        type: string
+      employees:
+        items:
+          $ref: '#/definitions/types.User'
+        type: array
+      id:
+        type: string
+      job:
+        type: string
+      name:
+        type: string
+    type: object
+host: localhost:9000
+info:
+  contact: {}
+  description: API Server for Employees Tree
+  title: Test app for Sber
+  version: "1.0"
+paths:
+  /api/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get employee tree by Id
+      operationId: getById
+      parameters:
+      - description: employee id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: GetById
+      tags:
+      - api
+swagger: "2.0"
